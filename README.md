@@ -13,5 +13,5 @@ Limiting settings are:
   - the profile field will display as required for users that are enroled in courses that reside under the categories, specified by course category IDs
 
 If the profile field `required` flag is set, the limiting parameters are combined using `OR` logic, otherwise `AND`.
-If the user IDs are specified, they take precedence over logic combinations.
+If user IDs are specified, they take precedence over logic combinations.
 
