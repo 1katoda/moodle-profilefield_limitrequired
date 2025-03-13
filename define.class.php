@@ -81,8 +81,6 @@ class profile_define_limitrequired extends profile_define_base {
     /**
      * Sets the field object and default data and format into $this->data and $this->dataformat
      *
-     * This method should be called before {@link self::set_user_data}
-     *
      * @param stdClass $field
      * @throws coding_exception
      */
