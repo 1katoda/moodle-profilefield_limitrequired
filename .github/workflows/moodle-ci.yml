@@ -82,10 +82,6 @@ jobs:
         if: ${{ !cancelled() }}
         run: moodle-plugin-ci phpunit --fail-on-warning
 
-      # - name: PHPUnit privacy provider tests
-      #   if: ${{ !cancelled() }}
-      #   run: moodle-plugin-ci phpunit --fail-on-warning
-
       - name: Mark cancelled jobs as failed.
         if: ${{ cancelled() }}
         run: exit 1
