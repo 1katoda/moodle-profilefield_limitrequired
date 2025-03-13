@@ -86,9 +86,13 @@ jobs:
         if: ${{ !cancelled() }}
         run: moodle-plugin-ci savepoints
 
-      - name: PHPUnit tests
+      - name: PHPUnit field tests
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci phpunit --fail-on-warning user/profile/field/limitrequired
+        run: moodle-plugin-ci phpunit --fail-on-warning user/profile/field/limitrequired/tests/field_class_test.php
+
+      - name: PHPUnit privacy provider tests
+        if: ${{ !cancelled() }}
+        run: moodle-plugin-ci phpunit --fail-on-warning user/profile/field/limitrequired/tests/privacy/provider.php
 
       - name: Mark cancelled jobs as failed.
         if: ${{ cancelled() }}
