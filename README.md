@@ -10,7 +10,10 @@ Plugin installation:
 - download / clone the repository
 - rename and move the repository to `user/profile/field/limitrequired`
 
+## Usage
+
 Limiting settings are:
+
 - user ID
   - the profile field will display as required for the specified user IDs
 - user authentication
