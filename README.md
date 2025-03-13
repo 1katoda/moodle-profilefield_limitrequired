@@ -2,6 +2,14 @@
 
 This is a text or password user profile field plugin for Moodle. It utilizes profile field parameters to set up the `required` flag based on user ID, user authentication type and course enrolments.
 
+It can be used to force only a subset of Moodle users to fill out a required profile field and not to bother the others.
+
+## Install
+
+Plugin installation:
+- download / clone the repository
+- rename and move the repository to `user/profile/field/limitrequired`
+
 Limiting settings are:
 - user ID
   - the profile field will display as required for the specified user IDs
