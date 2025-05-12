@@ -56,19 +56,33 @@ class profile_field_limitrequired extends profile_field_base {
             case 1:
                 $fieldtype = 'password';
                 break;
-            // case 2:
-            //     $fieldtype = 'email';
-            //     break;
-            // case 2:
-                // $fieldtype = 'number';
-                // $attributes = '';
-                // $paramtype = PARAM_INT;
+            case 2:
+                $attributes .= 'disabled="disabled" ';
+                break;
+            case 3:
+                $fieldtype = 'password';
+                $attributes .= 'disabled="disabled" ';
+                break;
         }
 
         // Create the form field.
-        $mform->addElement($fieldtype, $this->inputname, format_string($this->field->name),
-                    'maxlength="'.$maxlength.'" size="50" ');
+        $mform->addElement(
+            $fieldtype,
+            $this->inputname,
+            format_string($this->field->name),
+            $attributes
+        );
         $mform->setType($this->inputname, $paramtype);
+
+        // Add description if present.
+        if(!empty($this->field->description)) {
+            $mform->addElement(
+                'static',
+                'profilefield_limitrequired_description',
+                '',
+                $this->field->description
+            );
+        }
     }
 
     /**
@@ -106,11 +120,15 @@ class profile_field_limitrequired extends profile_field_base {
 
     public function is_required() {
         global $DB, $USER;
-        $isfound = $this->field->required;
+        $isfound = false;
 
+        if(!$this->field->required) {
+            return false;
+        }
         if(self::$isrequiredcached) {
 	        return self::$isrequiredcache;
         }
+
         if(!empty($this->field->param2)) {
             // Check if the user is specified for
             // this profile field
@@ -118,21 +136,11 @@ class profile_field_limitrequired extends profile_field_base {
             $found = false;
             foreach($userids as $userid) {
                 if($USER->id == intval(trim($userid))) {
-                    // return true;
-                    $found = true;
-                    break;
+                    return true;
                 }
             }
-            if(!$found) {
-                return false;
-            }
-            if($this->field->required) {
-                // Found user, matches at least
-                // one criterium.
-                return true;
-            }
-            $isfound = true;
         }
+
         if(!empty($this->field->param5)) {
             // Check if the user has the specified
             // auth type
@@ -148,11 +156,6 @@ class profile_field_limitrequired extends profile_field_base {
             self::$isrequiredcached = true;
             if(!$found) {
                 return false;
-            }
-            if($this->field->required) {
-                // Found user, matches at least
-                // one criterium.
-                return true;
             }
             $isfound = true;
         }
@@ -178,11 +181,6 @@ class profile_field_limitrequired extends profile_field_base {
                     // the field is not required.
                     return false;
                 }
-            }
-            if($this->field->required) {
-                // Found user, matches at least
-                // one criterium.
-                return true;
             }
             $isfound = true;
         }
@@ -213,15 +211,10 @@ class profile_field_limitrequired extends profile_field_base {
                     return false;
                 }
             }
-            if($this->field->required) {
-                // Found user, matches at least
-                // one criterium.
-                return true;
-            }
             $isfound = true;
         }
-        self::$isrequiredcache = true;
-        self::$isrequiredcached = true;
+        self::$isrequiredcache = $isfound;
+        self::$isrequiredcached = $isfound;
 
         return $isfound;
     }

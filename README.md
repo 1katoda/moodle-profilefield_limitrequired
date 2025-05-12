@@ -20,9 +20,9 @@ Limiting settings are:
   - the profile field will display as required for users with specified authentication types
 - course enrolments
   - the profile field will display as required for users that are enroled in courses, specified by course IDs
-- course enrolments
+- course enrolments under categories
   - the profile field will display as required for users that are enroled in courses that reside under the categories, specified by course category IDs
 
-If the profile field `required` flag is set, the limiting parameters are combined using `OR` logic, otherwise `AND`.
-If user IDs are specified, they take precedence over logic combinations.
+The limiting parameters are only applicable when the "Required" flag is set and are combined with "AND" logic.
+If user IDs are specified, they take precedence over other logic combinations. The field will be required for all specified user IDs.
 

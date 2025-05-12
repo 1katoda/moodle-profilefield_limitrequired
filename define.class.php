@@ -43,12 +43,19 @@ class profile_define_limitrequired extends profile_define_base {
         $form->addElement('select', 'param1', get_string('fieldtype', 'profilefield_limitrequired'), [
             get_string('text', 'profilefield_limitrequired'),
             get_string('password', 'profilefield_limitrequired'),
-            // get_string('email', 'profilefield_limitrequired'),
-            // get_string('number', 'profilefield_limitrequired'),
+            get_string('textdisabled', 'profilefield_limitrequired'),
+            get_string('passworddisabled', 'profilefield_limitrequired'),
         ]);
         $form->setType('param1', PARAM_INT);
 
-        // Param 3 for limitrequired type contains
+        $form->addElement(
+            'static',
+            'profilefield_limitrequired_required_logic_description',
+            '',
+            get_string('profilefield_limitrequired_required_logic_description', 'profilefield_limitrequired')
+        );
+
+        // Param 2 for limitrequired type contains
         // user ids. This field is required for users on this list.
         $form->addElement('text', 'param2', get_string('require_for_users', 'profilefield_limitrequired'), 'size="50"');
         $form->setType('param2', PARAM_TEXT);
@@ -73,7 +80,11 @@ class profile_define_limitrequired extends profile_define_base {
         // Param 5 for limitrequired type contains user
         // authentication methods to set required
         // flag
-        $form->addElement('text', 'param5', get_string('require_for_auth_methods', 'profilefield_limitrequired'), 'size="50"');
+        $plugins = core_component::get_plugin_list('auth');
+        $keys = array_keys($plugins);
+        $options = array_combine($keys, $keys);
+        $select = $form->addElement('select', 'param5', get_string('require_for_auth_methods', 'profilefield_limitrequired'), $options, 'size="5" style="width:100%"');
+        $select->setMultiple(true);
         $form->setType('param5', PARAM_TEXT);
         $form->addHelpButton('param5', 'require_for_auth_methods', 'profilefield_limitrequired');
     }
@@ -162,5 +173,23 @@ class profile_define_limitrequired extends profile_define_base {
         }
 
         return $errors;
-     }
+    }
+
+    /**
+     * Preprocess data - save array as string
+     *
+     * @param object $data
+     * @return object
+     */
+    public function define_save_preprocess($data) {
+        $new = [];
+        foreach($data as $key => $val) {
+            if(is_array($val)) {
+                $new[$key] = implode(',', $val);
+            } else {
+                $new[$key] = $val;
+            }
+        }
+        return (object) $new;
+    }
 }
